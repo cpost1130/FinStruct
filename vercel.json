@@ -1,0 +1,6 @@
+{
+  "buildCommand": "bash build-vercel-npm.sh",
+  "outputDirectory": ".vercel/output",
+  "installCommand": "npm install",
+  "framework": null
+}
