@@ -1,5 +1,5 @@
 {
   "framework": "vite",
-  "buildCommand": "npx vite build",
-  "installCommand": "npm install"
+  "buildCommand": "curl -fsSL https://bun.sh/install | bash && ~/.bun/bin/bun install && ~/.bun/bin/bun run build",
+  "installCommand": "curl -fsSL https://bun.sh/install | bash && ~/.bun/bin/bun install"
 }
