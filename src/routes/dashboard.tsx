@@ -3,6 +3,7 @@ import { useUser } from "@clerk/tanstack-start";
 import { useState, useEffect } from "react";
 import type { getUserDatabases } from "~/db";
 import { TEMPLATES } from "~/db";
+import { sendWelcomeEmail, sendSignupNotification } from "~/email";
 
 type Database = Awaited<ReturnType<typeof getUserDatabases>>[number];
 
@@ -64,13 +65,20 @@ function DashboardPage() {
       // Ensure the user exists in the database (first-time signups from Clerk)
       if (user) {
         try {
-          await mod.upsertUser({
+          const result = await mod.upsertUser({
             data: {
               id: user.id,
               email: user.primaryEmailAddress?.emailAddress || "",
               name: user.fullName || user.firstName || undefined,
             },
           });
+          // Fire welcome + notification emails for brand-new signups
+          if (result.isNewUser) {
+            const email = user.primaryEmailAddress?.emailAddress || "";
+            const name = user.fullName || user.firstName || undefined;
+            sendWelcomeEmail(email, name).catch(() => {});
+            sendSignupNotification(email, name).catch(() => {});
+          }
         } catch (e) {
           console.error("Failed to upsert user:", e);
         }

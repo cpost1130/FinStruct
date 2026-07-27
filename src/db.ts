@@ -317,6 +317,12 @@ export const upsertUser = createServerFn()
   .validator((d: { id: string; email: string; name?: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
+    // Check if user already exists
+    const [existing] = await db`
+      SELECT id FROM users WHERE id = ${data.id}
+    `;
+    const isNewUser = !existing;
+
     await db`
       INSERT INTO users (id, email, name)
       VALUES (${data.id}, ${data.email}, ${data.name || null})
@@ -325,7 +331,7 @@ export const upsertUser = createServerFn()
         name = COALESCE(EXCLUDED.name, users.name),
         updated_at = NOW()
     `;
-    return { success: true };
+    return { success: true, isNewUser };
   });
 
 export const getUserDatabases = createServerFn()
