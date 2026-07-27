@@ -206,6 +206,9 @@ function Nav() {
           <a href="#faq" className="text-sm font-medium text-gray-600 transition hover:text-gray-900">
             FAQ
           </a>
+          <a href="mailto:finstruct-2462085a@ctomail.io" className="text-sm font-medium text-gray-600 transition hover:text-gray-900">
+            Contact
+          </a>
           <a href="/sign-in" className="text-sm font-medium text-gray-600 transition hover:text-gray-900">
             Sign in
           </a>
@@ -241,6 +244,9 @@ function Nav() {
             </a>
             <a href="#faq" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-600">
               FAQ
+            </a>
+            <a href="mailto:finstruct-2462085a@ctomail.io" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-600">
+              Contact
             </a>
             <a href="/sign-in" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-600">
               Sign in
@@ -500,6 +506,9 @@ function Footer() {
             </a>
             <a href="#faq" className="text-sm text-gray-500 transition hover:text-gray-900">
               FAQ
+            </a>
+            <a href="mailto:finstruct-2462085a@ctomail.io" className="text-sm text-gray-500 transition hover:text-gray-900">
+              Contact us
             </a>
             <a href="/sign-in" className="text-sm text-gray-500 transition hover:text-gray-900">
               Sign in

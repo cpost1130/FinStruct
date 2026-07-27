@@ -191,7 +191,43 @@ function DatabaseDetailPage() {
               <button onClick={() => setShowNewField(true)} className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700">+ Add Field</button>
             </div>
             <div className="mt-4 space-y-3">
-              {fields.length === 0 && <div className="rounded-xl border-2 border-dashed border-gray-300 py-12 text-center"><p className="text-sm text-gray-500">No fields yet.</p></div>}
+              {fields.length === 0 ? (
+                <div className="rounded-xl border-2 border-dashed border-gray-300 py-12">
+                  <div className="max-w-md mx-auto text-center">
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                      <span className="text-3xl">🏗️</span>
+                      <h3 className="text-lg font-semibold text-gray-900">Let's build your database!</h3>
+                    </div>
+                    <p className="text-sm text-gray-500 mb-8">Define the fields (columns) you want to track. It only takes a minute.</p>
+                    <div className="space-y-4 text-left">
+                      <div className="flex items-start gap-3">
+                        <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-700">1</span>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">Add your first field</p>
+                          <p className="text-xs text-gray-500">Click "+ Add Field" and define what you want to track — like "Amount", "Category", or "Date".</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-bold text-gray-500">2</span>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">Add records</p>
+                          <p className="text-xs text-gray-500">Once you have fields, switch to the Records tab and start entering data.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-bold text-gray-500">3</span>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">View your dashboard</p>
+                          <p className="text-xs text-gray-500">Charts and insights are auto-generated from your data — no setup needed.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <button onClick={() => setShowNewField(true)} className="mt-8 inline-flex items-center rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700">
+                      + Add Your First Field
+                    </button>
+                  </div>
+                </div>
+              ) : null}
               {fields.map((field, i) => (
                 <div key={field.id} className="flex items-center gap-4 rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-sm">
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 text-xs font-bold text-gray-500">{i+1}</div>
@@ -226,7 +262,17 @@ function DatabaseDetailPage() {
         {activeTab === "data" && (
           <div className="mt-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">Records ({records.length})</h2>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">Records ({records.length})</h2>
+                {subscription.tier === "free" && (
+                  <p className="mt-0.5 text-xs text-gray-500">
+                    {records.length}/{recordLimit.limit} records used (Free plan)
+                    {records.length >= recordLimit.limit && (
+                      <Link to="/pricing" className="ml-1 font-semibold text-brand-600 underline">Upgrade to Pro</Link>
+                    )}
+                  </p>
+                )}
+              </div>
               <button onClick={()=>{if (!recordLimit.allowed && subscription.tier === "free") {alert("Free plan limit: 100 records. Upgrade to Pro.");return;}setNewRecordData({});setShowNewRecord(true);}} disabled={fields.length===0} className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50">+ Add Record</button>
             </div>
             {subscription.tier === "free" && records.length >= 90 && (<div className="mb-3 rounded-xl border border-amber-200 bg-amber-50 p-3"><p className="text-xs text-amber-800"><strong>{100 - records.length} records remaining</strong> on free plan. <a href="/pricing">Upgrade</a></p></div>)}<div className="mt-4 overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">

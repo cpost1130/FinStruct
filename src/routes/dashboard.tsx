@@ -28,12 +28,28 @@ function DashboardPage() {
   const [generatedKey, setGeneratedKey] = useState("");
   const [showTemplates, setShowTemplates] = useState(false);
   const [creatingTemplate, setCreatingTemplate] = useState<string | null>(null);
+  const [welcomeDismissed, setWelcomeDismissed] = useState(true);
 
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
       loadData();
     }
   }, [isLoaded, isSignedIn, user]);
+
+  // Check for first-visit welcome banner (only once localStorage is available)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const dismissed = localStorage.getItem("finstruct_welcome_dismissed");
+      setWelcomeDismissed(dismissed === "true");
+    }
+  }, []);
+
+  const dismissWelcome = () => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("finstruct_welcome_dismissed", "true");
+    }
+    setWelcomeDismissed(true);
+  };
 
   const loadData = async () => {
     const mod = await import("~/db");
@@ -188,6 +204,25 @@ function DashboardPage() {
       </nav>
 
       <div className="mx-auto max-w-7xl px-6 pt-24 pb-12">
+        {/* First-visit welcome banner */}
+        {!welcomeDismissed && databases.length === 0 && !loading && (
+          <div className="mb-6 rounded-xl border border-brand-200 bg-brand-50 p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">👋</span>
+              <p className="text-sm font-medium text-brand-800">
+                Welcome to FinStruct! Start by picking a template or creating a blank database.
+              </p>
+            </div>
+            <button
+              onClick={dismissWelcome}
+              className="ml-4 flex-shrink-0 rounded-lg p-1.5 text-brand-500 hover:bg-brand-100 hover:text-brand-700 transition"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        )}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">My Databases</h1>
