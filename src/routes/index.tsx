@@ -521,11 +521,36 @@ function Footer() {
   );
 }
 
+function ProductHuntBadge() {
+  return (
+    <section className="border-t border-gray-100 bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 py-6">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="flex items-center gap-2">
+            <svg className="h-5 w-5 text-orange-500" viewBox="0 0 40 40" fill="currentColor">
+              <path d="M14.4 20.5H20V26h-5.6v-5.5zM20 14.5h-5.6V20H20v-5.5zM25.6 20.5H20V26h5.6v-5.5zM25.6 14.5H20V20h5.6v-5.5z" />
+              <path fillRule="evenodd" d="M40 20c0 11.046-8.954 20-20 20S0 31.046 0 20 8.954 0 20 0s20 8.954 20 20zm-6 0c0 7.732-6.268 14-14 14S6 27.732 6 20 12.268 6 20 6s14 6.268 14 14z" clipRule="evenodd" />
+            </svg>
+            <span className="text-sm font-semibold text-orange-800">
+              Featured on Product Hunt
+            </span>
+          </div>
+          <span className="hidden sm:inline text-orange-300">·</span>
+          <span className="text-sm text-orange-700">
+            Launching soon — follow us for early access
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Home() {
   return (
     <div className="min-h-screen bg-white font-sans">
       <Nav />
       <Hero />
+      <ProductHuntBadge />
       <FeaturesSection />
       <PricingSection />
       <FAQSection />
