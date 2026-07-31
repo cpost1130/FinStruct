@@ -36,6 +36,11 @@ export const Route = createRootRoute({
       { name: "twitter:description", content: SITE_DESC },
       { name: "twitter:image", content: OG_IMAGE },
       { name: "twitter:creator", content: "@finstruct" },
+      // PWA / Mobile Web App
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+      { name: "apple-mobile-web-app-title", content: "FinStruct" },
+      { name: "theme-color", content: "#2563eb" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -43,6 +48,7 @@ export const Route = createRootRoute({
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>📊</text></svg>" },
       { rel: "canonical", href: SITE_URL },
+      { rel: "manifest", href: "/manifest.json" },
     ],
   }),
   notFoundComponent: () => (
@@ -90,6 +96,11 @@ function RootDocument({ children }: { children: ReactNode }) {
         <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}>
           {children}
         </ClerkProvider>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js')}",
+          }}
+        />
         <Scripts />
       </body>
     </html>
