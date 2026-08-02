@@ -79,7 +79,7 @@ function welcomeEmailHtml(nameOrEmail: string): string {
         <table width="100%" cellpadding="0" cellspacing="0">
           <tr>
             <td style="text-align: center; padding-bottom: 32px;">
-              <span style="display: inline-block; width: 48px; height: 48px; line-height: 48px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 12px; color: white; font-weight: 700; font-size: 20px; text-align: center;">F</span>
+              <span style="display: inline-block; width: 48px; height: 48px; line-height: 48px; background: linear-gradient(135deg, #116dff, #ED1566); border-radius: 12px; color: white; font-weight: 700; font-size: 20px; text-align: center;">F</span>
             </td>
           </tr>
         </table>
@@ -94,7 +94,7 @@ function welcomeEmailHtml(nameOrEmail: string): string {
           <tr>
             <td style="text-align: center; padding-bottom: 32px;">
               <a href="https://finstruct.vercel.app/dashboard"
-                 style="display: inline-block; padding: 14px 36px; background: #6366f1; color: white; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 15px;">
+                 style="display: inline-block; padding: 14px 36px; background: #116dff; color: white; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 15px;">
                 Go to your dashboard →
               </a>
             </td>

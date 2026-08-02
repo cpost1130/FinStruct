@@ -22,7 +22,7 @@ const FIELD_TYPES = [
   { value: "select", label: "Select" }, { value: "boolean", label: "Yes/No" },
 ];
 
-const COLORS = ["#6366f1","#8b5cf6","#a78bfa","#c084fc","#e879f9","#f472b6","#fb7185","#f87171","#fb923c","#fbbf24","#a3e635","#4ade80","#34d399","#2dd4bf","#22d3ee"];
+const COLORS = ["#116dff","#ED1566","#a78bfa","#c084fc","#e879f9","#f472b6","#fb7185","#f87171","#fb923c","#fbbf24","#a3e635","#4ade80","#34d399","#2dd4bf","#22d3ee"];
 
 function DatabaseDetailPage() {
   const { databaseId } = Route.useParams();

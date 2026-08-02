@@ -537,7 +537,7 @@ function ProductHuntBadge() {
           </div>
           <span className="hidden sm:inline text-orange-300">·</span>
           <span className="text-sm text-orange-700">
-            Launching soon — follow us for early access
+            We launched! Check us out on Product Hunt 🎉
           </span>
         </div>
       </div>
