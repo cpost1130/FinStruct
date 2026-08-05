@@ -525,7 +525,12 @@ function ProductHuntBadge() {
   return (
     <section className="border-t border-gray-100 bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 py-6">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <a
+          href="https://www.producthunt.com/products/finstruct"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-col items-center justify-center gap-3 transition hover:opacity-80 sm:flex-row"
+        >
           <div className="flex items-center gap-2">
             <svg className="h-5 w-5 text-orange-500" viewBox="0 0 40 40" fill="currentColor">
               <path d="M14.4 20.5H20V26h-5.6v-5.5zM20 14.5h-5.6V20H20v-5.5zM25.6 20.5H20V26h5.6v-5.5zM25.6 14.5H20V20h5.6v-5.5z" />
@@ -539,7 +544,7 @@ function ProductHuntBadge() {
           <span className="text-sm text-orange-700">
             We launched! Check us out on Product Hunt 🎉
           </span>
-        </div>
+        </a>
       </div>
     </section>
   );
