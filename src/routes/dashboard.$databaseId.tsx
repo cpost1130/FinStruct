@@ -8,6 +8,8 @@ import {
   PieChart, Pie, Cell, Legend,
   LineChart, Line,
 } from "recharts";
+import AppShell from "~/components/AppShell";
+import AddRecordSheet from "~/components/AddRecordSheet";
 
 export const Route = createFileRoute("/dashboard/$databaseId")({
   component: DatabaseDetailPage,
@@ -112,6 +114,7 @@ function DatabaseDetailPage() {
   };
 
   // Dashboard computations
+  const [showAddSheet, setShowAddSheet] = useState(false);
   const numFields = fields.filter((f) => f.type === "number" || f.type === "currency");
   const catFields = fields.filter((f) => f.type === "select");
   const dateFields = fields.filter((f) => f.type === "date");
@@ -155,24 +158,12 @@ function DatabaseDetailPage() {
   if (!isLoaded) return <div className="flex min-h-screen items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-brand-200 border-t-brand-600" /></div>;
   if (!isSignedIn) return <Navigate to="/sign-in" />;
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="fixed top-0 z-50 w-full border-b border-gray-100 bg-white/80 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-3">
-            <Link to="/dashboard" className="text-gray-500 hover:text-gray-700">
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-              </svg>
-            </Link>
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-600 to-accent-500 text-white text-sm font-bold shadow-sm">F</span>
-            <span className="text-lg font-bold tracking-tight text-gray-900">{dbName}</span>
-          </div>
-          <button onClick={handleExport} className="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50">Export CSV</button>
-        </div>
-      </nav>
+  const heroTotal = numFields.length > 0 ? Object.values(totals).reduce((s: number, v: number) => s + v, 0) : 0;
+  const heroField = numFields.length > 0 ? numFields[0].name : null;
 
-      <div className="mx-auto max-w-7xl px-6 pt-20 pb-12">
+  return (
+    <AppShell backTo="/dashboard" hideTabs onFabClick={() => setShowAddSheet(true)}>
+      <div className="px-4 pt-4 pb-24">
         {/* Tabs */}
         <div className="flex gap-1 rounded-xl bg-white p-1 shadow-sm border border-gray-200">
           {(["data","schema","dashboard"] as const).map((tab) => (
@@ -335,26 +326,70 @@ function DatabaseDetailPage() {
         {/* Dashboard Tab */}
         {activeTab === "dashboard" && (
           <div className="mt-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-6">Dashboard</h2>
             {records.length === 0 ? (
               <div className="rounded-xl border-2 border-dashed border-gray-300 py-16 text-center">
                 <p className="text-sm text-gray-500">Add records to see dashboard insights.</p>
               </div>
             ) : (
-              <div className="space-y-8">
-                {/* Summary Cards */}
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                  <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Records</p>
-                    <p className="mt-1 text-3xl font-bold text-gray-900">{count}</p>
+              <div className="space-y-6">
+                <div className="rounded-[20px] bg-gradient-to-br from-brand-600 to-brand-800 p-6 text-white shadow-lg shadow-brand-600/20">
+                  <p className="text-xs font-semibold tracking-wide text-white/70">Total this month</p>
+                  <p className="mt-1 text-4xl font-extrabold tracking-tight">
+                    {heroField && numFields[0].type === "currency" ? "$" : ""}
+                    {heroTotal.toLocaleString(undefined, {maximumFractionDigits: 2})}
+                  </p>
+                  <div className="mt-3 flex items-center gap-2">
+                    <span className="rounded-full bg-white/15 px-2.5 py-0.5 text-xs font-semibold text-white/90">{count} record{count !== 1 ? "s" : ""}</span>
+                    {heroField && <span className="text-xs text-white/60">Total {heroField}</span>}
                   </div>
-                  {numFields.map(f=>(
-                    <div key={f.id} className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Total {f.name}</p>
-                      <p className="mt-1 text-2xl font-bold text-gray-900">{(f.type==="currency"?"$":"") + (totals[f.name]||0).toLocaleString(undefined,{maximumFractionDigits:2})}</p>
-                      {count>1&&<p className="mt-0.5 text-xs text-gray-400">Avg: {(f.type==="currency"?"$":"") + (avgs[f.name]||0).toLocaleString(undefined,{maximumFractionDigits:2})}</p>}
+                </div>
+                {catFields.length > 0 && (
+                  <div className="rounded-2xl bg-white p-5 shadow-sm">
+                    <h3 className="mb-4 text-sm font-bold text-gray-700">By Category</h3>
+                    <div className="space-y-3.5">
+                      {catFields.map((cf) => {
+                        const breakdown = catBreakdowns[cf.name];
+                        if (!breakdown) return null;
+                        const entries = Object.entries(breakdown).sort((a: [string, number], b: [string, number]) => b[1] - a[1]);
+                        const maxVal = Math.max(...entries.map((e: [string, number]) => e[1]), 1);
+                        const barColors = ["bg-brand-600","bg-brand-400","bg-accent-500","bg-brand-300","bg-accent-400","bg-brand-200"];
+                        return (<div key={cf.id}><p className="mb-1.5 text-xs font-semibold text-gray-500">{cf.name}</p>
+                          {entries.slice(0, 5).map(([label, val], i) => (
+                            <div key={label} className="mb-1.5 flex items-center gap-3">
+                              <span className="w-20 flex-shrink-0 text-xs text-gray-600 truncate">{label}</span>
+                              <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
+                                <div className={`h-full rounded-full ${barColors[i % barColors.length]}`} style={{ width: `${Math.round((val / maxVal) * 100)}%` }} />
+                              </div>
+                              <span className="w-10 flex-shrink-0 text-right text-xs font-semibold text-gray-500">{val}</span>
+                            </div>))}
+                        </div>);
+                      })}
                     </div>
-                  ))}
+                  </div>
+                )}
+                <div className="rounded-2xl bg-white p-5 shadow-sm">
+                  <h3 className="mb-4 text-sm font-bold text-gray-700">Recent Records</h3>
+                  <div className="space-y-2">
+                    {records.slice(0, 6).map((r, i) => {
+                      const descField = fields.find(f2 => f2.type === "text");
+                      const catField = fields.find(f2 => f2.type === "select");
+                      const amtField = numFields[0];
+                      const dateField = fields.find(f2 => f2.type === "date");
+                      const dd = descField ? String(r.data[descField.name] || "—") : "Record #" + (i + 1);
+                      const cc = catField ? String(r.data[catField.name] || "—") : "";
+                      const aa = amtField ? Number(r.data[amtField.name]) || 0 : 0;
+                      const dd2 = dateField ? String(r.data[dateField.name] || "").slice(0, 10) : "";
+                      return (<div key={r.id} className="flex items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-gray-50">
+                        <div className="flex-1 min-w-0"><p className="text-sm font-medium text-gray-900 truncate">{dd}</p><p className="text-xs text-gray-400">{cc}{cc && dd2 ? " · " : ""}{dd2}</p></div>
+                        <span className="text-sm font-semibold text-gray-900">{amtField?.type === "currency" ? "$" : ""}{Math.abs(aa).toLocaleString(undefined, {maximumFractionDigits: 2})}</span>
+                      </div>);
+                    })}
+                    {records.length === 0 && <p className="py-4 text-center text-sm text-gray-400">No records yet. Tap + to add one.</p>}
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">{count} records</span>
+                  {numFields.slice(0, 3).map(f => (<span key={f.id} className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600">{f.name}: {(f.type === "currency" ? "$" : "") + (totals[f.name] || 0).toLocaleString(undefined, {maximumFractionDigits: 0})}</span>))}
                 </div>
 
                 {/* Bar Chart */}
@@ -417,6 +452,7 @@ function DatabaseDetailPage() {
           </div>
         )}
       </div>
-    </div>
+      <AddRecordSheet open={showAddSheet} onClose={() => setShowAddSheet(false)} />
+    </AppShell>
   );
 }
