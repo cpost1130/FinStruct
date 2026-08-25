@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#116dff"/>
+      <stop offset="100%" stop-color="#ED1566"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded square with brand gradient -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#brandGrad)"/>
+
+  <!-- White F mark -->
+  <g fill="#FFFFFF">
+    <!-- F vertical stem -->
+    <rect x="18" y="16" width="7" height="32" rx="1.5"/>
+    <!-- F top bar -->
+    <rect x="18" y="16" width="27" height="7" rx="1.5"/>
+    <!-- F middle bar -->
+    <rect x="18" y="28.5" width="21" height="7" rx="1.5"/>
+  </g>
+</svg>
