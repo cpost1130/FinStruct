@@ -32,7 +32,7 @@ function AppShell({ children, backTo, hideTabs, onFabClick }: AppShellProps) {
               ←
             </button>
           ) : null}
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-600 to-accent-500 text-white text-xs font-bold shadow-sm">F</span>
+          <img src="/icon.svg" alt="FinStruct" className="h-8 w-8 rounded-lg" />
           {!isDetailView && <span className="text-[15px] font-bold tracking-tight text-gray-900">FinStruct</span>}
         </div>
         {!isDetailView && <div className="flex h-9 w-9 items-center justify-center rounded-[11px] bg-brand-50 text-sm font-bold text-brand-600">A</div>}

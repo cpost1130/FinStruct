@@ -189,9 +189,7 @@ function Nav() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
         <a href="/" className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-600 to-accent-500 text-white text-sm font-bold shadow-sm">
-            F
-          </span>
+          <img src="/icon.svg" alt="FinStruct" className="h-8 w-8 rounded-lg" />
           <span className="text-lg font-bold tracking-tight text-gray-900">FinStruct</span>
         </a>
 
@@ -492,9 +490,7 @@ function Footer() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
           <div className="flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-brand-600 to-accent-500 text-white text-xs font-bold">
-              F
-            </span>
+            <img src="/icon.svg" alt="FinStruct" className="h-7 w-7 rounded-lg" />
             <span className="text-sm font-bold text-gray-900">FinStruct</span>
           </div>
           <nav className="flex gap-6">
