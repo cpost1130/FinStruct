@@ -133,13 +133,6 @@ export const initSchema = createServerFn().handler(async () => {
 // ─── Logging Function ───────────────────────────────────────────────────────
 
 export const logEvent = createServerFn()
-  .validator((d: {
-    userId?: string;
-    eventType: string;
-    resource: string;
-    details?: Record<string, unknown>;
-    ipAddress?: string;
-  }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     await db`
@@ -158,7 +151,6 @@ export const logEvent = createServerFn()
 // ─── Subscription Functions ─────────────────────────────────────────────────
 
 export const getUserSubscription = createServerFn()
-  .validator((d: { userId: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const [user] = await db`
@@ -171,7 +163,6 @@ export const getUserSubscription = createServerFn()
   });
 
 export const checkDatabaseLimit = createServerFn()
-  .validator((d: { userId: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const [user] = await db`
@@ -187,7 +178,6 @@ export const checkDatabaseLimit = createServerFn()
   });
 
 export const checkRecordLimit = createServerFn()
-  .validator((d: { userId: string; databaseId: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const [user] = await db`
@@ -203,7 +193,6 @@ export const checkRecordLimit = createServerFn()
   });
 
 export const upgradeUserTier = createServerFn()
-  .validator((d: { userId: string; tier: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const [user] = await db`
@@ -217,7 +206,6 @@ export const upgradeUserTier = createServerFn()
 // ─── API Key Functions ──────────────────────────────────────────────────────
 
 export const generateApiKey = createServerFn()
-  .validator((d: { userId: string; name: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const [user] = await db`
@@ -254,7 +242,6 @@ export const generateApiKey = createServerFn()
   });
 
 export const revokeApiKey = createServerFn()
-  .validator((d: { userId: string; keyId: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const [row] = await db`
@@ -281,7 +268,6 @@ export const revokeApiKey = createServerFn()
   });
 
 export const listApiKeys = createServerFn()
-  .validator((d: { userId: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const rows = await db`
@@ -298,7 +284,6 @@ export const listApiKeys = createServerFn()
   });
 
 export const validateApiKey = createServerFn()
-  .validator((d: { apiKey: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const crypto = await import("node:crypto");
@@ -314,7 +299,6 @@ export const validateApiKey = createServerFn()
 // ─── Server Functions ─────────────────────────────────────────────────────
 
 export const upsertUser = createServerFn()
-  .validator((d: { id: string; email: string; name?: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     // Check if user already exists
@@ -335,7 +319,6 @@ export const upsertUser = createServerFn()
   });
 
 export const getUserDatabases = createServerFn()
-  .validator((d: { userId: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const rows = await db`
@@ -351,7 +334,6 @@ export const getUserDatabases = createServerFn()
   });
 
 export const createDatabase = createServerFn()
-  .validator((d: { userId: string; name: string; description?: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const [row] = await db`
@@ -363,7 +345,6 @@ export const createDatabase = createServerFn()
   });
 
 export const deleteDatabase = createServerFn()
-  .validator((d: { databaseId: string; userId: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     await db`
@@ -373,7 +354,6 @@ export const deleteDatabase = createServerFn()
   });
 
 export const getFields = createServerFn()
-  .validator((d: { databaseId: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const rows = await db`
@@ -389,13 +369,6 @@ export const getFields = createServerFn()
   });
 
 export const addField = createServerFn()
-  .validator((d: {
-    databaseId: string;
-    name: string;
-    type: string;
-    fieldOrder: number;
-    config?: Record<string, unknown>;
-  }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const [row] = await db`
@@ -410,7 +383,6 @@ export const addField = createServerFn()
   });
 
 export const deleteField = createServerFn()
-  .validator((d: { fieldId: string; databaseId: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     await db`
@@ -420,7 +392,6 @@ export const deleteField = createServerFn()
   });
 
 export const getRecords = createServerFn()
-  .validator((d: { databaseId: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const rows = await db`
@@ -438,7 +409,6 @@ export const getRecords = createServerFn()
   });
 
 export const addRecord = createServerFn()
-  .validator((d: { databaseId: string; data: Record<string, unknown> }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const [row] = await db`
@@ -454,7 +424,6 @@ export const addRecord = createServerFn()
   });
 
 export const updateRecord = createServerFn()
-  .validator((d: { recordId: string; data: Record<string, unknown> }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const [row] = await db`
@@ -471,7 +440,6 @@ export const updateRecord = createServerFn()
   });
 
 export const deleteRecord = createServerFn()
-  .validator((d: { recordId: string; databaseId: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     await db`
@@ -481,7 +449,6 @@ export const deleteRecord = createServerFn()
   });
 
 export const exportCSV = createServerFn()
-  .validator((d: { databaseId: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const [dbInfo] = await db`
@@ -656,7 +623,6 @@ export const TEMPLATES = [
 ];
 
 export const createDatabaseFromTemplate = createServerFn()
-  .validator((d: { userId: string; templateId: string }) => d)
   .handler(async ({ data }) => {
     const db = sql();
     const template = TEMPLATES.find((t) => t.id === data.templateId);
