@@ -127,6 +127,21 @@ export const initSchema = createServerFn().handler(async () => {
     CREATE INDEX IF NOT EXISTS idx_api_logs_created_at ON api_logs(created_at);
   `;
 
+  // Analytics table (public page views)
+  await db`
+    CREATE TABLE IF NOT EXISTS analytics (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      path TEXT NOT NULL,
+      referrer TEXT,
+      user_agent TEXT,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    );
+  `;
+
+  await db`
+    CREATE INDEX IF NOT EXISTS idx_analytics_created_at ON analytics(created_at);
+  `;
+
   return { success: true };
 });
 
@@ -476,6 +491,67 @@ export const exportCSV = createServerFn()
     return {
       filename: `${(dbInfo as { name: string }).name || "export"}.csv`,
       content: [header, ...rows].join("\n"),
+    };
+  });
+
+// ─── Analytics Functions ────────────────────────────────────────────────────
+
+export const logPageView = createServerFn()
+  .handler(async ({ data }) => {
+    const db = sql();
+    await db`
+      INSERT INTO analytics (path, referrer, user_agent)
+      VALUES (${data.path}, ${data.referrer || null}, ${data.userAgent || null})
+    `;
+    return { success: true };
+  });
+
+export const getAnalyticsSummary = createServerFn()
+  .handler(async () => {
+    const db = sql();
+
+    const [today] = await db`
+      SELECT COUNT(*)::int AS count FROM analytics
+      WHERE created_at >= date_trunc('day', NOW())
+    `;
+    const [week] = await db`
+      SELECT COUNT(*)::int AS count FROM analytics
+      WHERE created_at >= date_trunc('day', NOW()) - INTERVAL '7 days'
+    `;
+    const [allTime] = await db`
+      SELECT COUNT(*)::int AS count FROM analytics
+    `;
+    const topReferrers = await db`
+      SELECT COALESCE(NULLIF(referrer, ''), 'Direct') AS source, COUNT(*)::int AS count
+      FROM analytics
+      WHERE created_at >= NOW() - INTERVAL '7 days'
+      GROUP BY COALESCE(NULLIF(referrer, ''), 'Direct')
+      ORDER BY count DESC
+      LIMIT 10
+    `;
+    const topPages = await db`
+      SELECT path, COUNT(*)::int AS count
+      FROM analytics
+      WHERE created_at >= NOW() - INTERVAL '7 days'
+      GROUP BY path
+      ORDER BY count DESC
+      LIMIT 10
+    `;
+    const viewsByHour = await db`
+      SELECT date_trunc('hour', created_at)::text AS hour, COUNT(*)::int AS count
+      FROM analytics
+      WHERE created_at >= NOW() - INTERVAL '48 hours'
+      GROUP BY 1
+      ORDER BY 1 ASC
+    `;
+
+    return {
+      today: today?.count ?? 0,
+      week: week?.count ?? 0,
+      allTime: allTime?.count ?? 0,
+      topReferrers: topReferrers.map((r) => ({ source: r.source, count: r.count })),
+      topPages: topPages.map((p) => ({ path: p.path, count: p.count })),
+      viewsByHour: viewsByHour.map((h) => ({ hour: h.hour, count: h.count })),
     };
   });
 

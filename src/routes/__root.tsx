@@ -3,8 +3,9 @@ import {
   Outlet,
   Scripts,
   createRootRoute,
+  useRouterState,
 } from "@tanstack/react-router";
-import { type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { ClerkProvider } from "@clerk/clerk-react";
 
 import appCss from "~/styles/app.css?url";
@@ -80,9 +81,35 @@ export const Route = createRootRoute({
   component: RootComponent,
 });
 
+// Tracks public page views for the analytics dashboard (no cookies, no personal data).
+// Skips authenticated/private routes.
+function PageViewTracker() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  useEffect(() => {
+    if (/^\/(admin|dashboard|sign-in|sign-up|settings|onboarding|payment)/.test(pathname)) {
+      return;
+    }
+    import("~/db").then(({ logPageView }) => {
+      logPageView({
+        data: {
+          path: pathname,
+          referrer: typeof document !== "undefined" ? document.referrer : null,
+          userAgent: typeof navigator !== "undefined" ? navigator.userAgent : null,
+        },
+      }).catch(() => {
+        // Best-effort tracking — never block navigation on analytics failures.
+      });
+    });
+  }, [pathname]);
+
+  return null;
+}
+
 function RootComponent() {
   return (
     <RootDocument>
+      <PageViewTracker />
       <Outlet />
     </RootDocument>
   );
