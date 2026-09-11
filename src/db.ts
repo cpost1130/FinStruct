@@ -227,7 +227,7 @@ export const generateApiKey = createServerFn()
       SELECT subscription_tier FROM users WHERE id = ${data.userId}
     `;
     const tier = user?.subscription_tier || "free";
-    if (tier === "free") throw new Error("API access requires a Pro or Team subscription");
+    if (tier === "free") throw new Error("API access requires a Pro subscription");
     
     const crypto = await import("node:crypto");
     const rawKey = "fs_" + crypto.randomBytes(24).toString("hex");

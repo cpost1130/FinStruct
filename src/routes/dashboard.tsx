@@ -199,10 +199,8 @@ function DashboardPage() {
             <Link to="/pricing" className="text-sm font-medium text-gray-500 hover:text-gray-900">
               {subscription.tier === "free" ? (
                 <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">Free Plan</span>
-              ) : subscription.tier === "pro" ? (
-                <span className="rounded-full bg-brand-100 px-3 py-1 text-xs font-semibold text-brand-800">Pro Plan</span>
               ) : (
-                <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-800">Team Plan</span>
+                <span className="rounded-full bg-brand-100 px-3 py-1 text-xs font-semibold text-brand-800">Pro Plan</span>
               )}
             </Link>
             <span className="text-sm text-gray-600">{user.primaryEmailAddress?.emailAddress}</span>

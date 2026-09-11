@@ -48,22 +48,6 @@ const pricingPlans: PricingPlan[] = [
     cta: "Start Pro trial",
     highlighted: true,
   },
-  {
-    name: "Team",
-    price: "$30",
-    period: "/mo",
-    desc: "For small teams ready to scale.",
-    features: [
-      "Up to 5 seats",
-      "Shared databases & permissions",
-      "Team workspaces",
-      "Audit log",
-      "Data migration assistance",
-      "All Pro features",
-    ],
-    cta: "Start Team trial",
-    highlighted: false,
-  },
 ];
 
 const faqs: FAQ[] = [
@@ -77,15 +61,11 @@ const faqs: FAQ[] = [
   },
   {
     q: "Can I import data from spreadsheets?",
-    a: "Yes. FinStruct supports CSV import, so you can migrate your existing spreadsheets in minutes. We also offer data migration assistance on Team plans.",
+    a: "Yes. FinStruct supports CSV import, so you can migrate your existing spreadsheets in minutes.",
   },
   {
     q: "How is this different from QuickBooks or an ERP?",
     a: "FinStruct is a flexible database builder, not an accounting app. You design exactly the tracking system you need — unlike rigid off-the-shelf software — without the complexity or cost of an ERP.",
-  },
-  {
-    q: "Can I share my database with my team?",
-    a: "Yes. Our Team plan includes shared databases, role-based permissions, and workspaces so everyone stays in sync. Upgrade anytime.",
   },
   {
     q: "Is my data secure?",
@@ -97,7 +77,7 @@ const faqs: FAQ[] = [
   },
   {
     q: "What if I need help getting started?",
-    a: "Pro plans include priority support. Team plans include data migration assistance. We're here to help you succeed.",
+    a: "Pro plans include priority support. We're here to help you succeed.",
   },
 ];
 
@@ -136,16 +116,7 @@ const features = [
       </svg>
     ),
     title: "API access",
-    desc: "Connect your FinStruct database to your other tools. REST API with full CRUD support — available on Pro plans and above.",
-  },
-  {
-    icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-      </svg>
-    ),
-    title: "Team sharing & permissions",
-    desc: "Share databases with your team, set role-based permissions, and collaborate in real time. Perfect for small teams.",
+    desc: "Connect your FinStruct database to your other tools. REST API with full CRUD support — available on Pro plans.",
   },
   {
     icon: (
@@ -369,7 +340,7 @@ function PricingSection() {
           </p>
         </div>
 
-        <div className="mt-16 grid gap-8 lg:grid-cols-3 lg:gap-6">
+        <div className="mt-16 grid gap-8 lg:grid-cols-2 lg:gap-6">
           {pricingPlans.map((plan) => (
             <div
               key={plan.name}
@@ -419,7 +390,7 @@ function PricingSection() {
         </div>
 
         <p className="mt-10 text-center text-sm text-gray-500">
-          All plans include community support. Priority support on Pro. Data migration assistance on Team.
+          All plans include community support. Priority support on Pro.
         </p>
       </div>
     </section>
