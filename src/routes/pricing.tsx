@@ -35,24 +35,6 @@ const tiers = [
     highlighted: true,
     current: false,
   },
-  {
-    name: "Team",
-    price: "$30",
-    period: "/mo",
-    desc: "For small teams ready to scale.",
-    features: [
-      "Up to 5 seats",
-      "Shared databases & permissions",
-      "Team workspaces",
-      "Audit log",
-      "Data migration assistance",
-      "All Pro features",
-    ],
-    cta: "Upgrade to Team",
-    href: "https://buy.stripe.com/eVqbJ08vR9PCfudegreQM06",
-    highlighted: false,
-    current: false,
-  },
 ];
 
 function Nav() {
@@ -162,17 +144,13 @@ function Footer() {
 
 function ComparisonTable() {
   const rows = [
-    { feature: "Databases", free: "1", pro: "Unlimited", team: "Unlimited" },
-    { feature: "Records", free: "500", pro: "Unlimited", team: "Unlimited" },
-    { feature: "Schema builder", free: "Basic", pro: "Advanced", team: "Advanced" },
-    { feature: "CSV import/export", free: "—", pro: "✓", team: "✓" },
-    { feature: "API access", free: "—", pro: "✓", team: "✓" },
-    { feature: "Auto dashboards", free: "—", pro: "✓", team: "✓" },
-    { feature: "Team seats", free: "1", pro: "1", team: "Up to 5" },
-    { feature: "Permissions", free: "—", pro: "—", team: "✓" },
-    { feature: "Audit log", free: "—", pro: "—", team: "✓" },
-    { feature: "Priority support", free: "—", pro: "✓", team: "✓" },
-    { feature: "Data migration", free: "—", pro: "—", team: "✓" },
+    { feature: "Databases", free: "1", pro: "Unlimited" },
+    { feature: "Records", free: "500", pro: "Unlimited" },
+    { feature: "Schema builder", free: "Basic", pro: "Advanced" },
+    { feature: "CSV import/export", free: "—", pro: "✓" },
+    { feature: "API access", free: "—", pro: "✓" },
+    { feature: "Auto dashboards", free: "—", pro: "✓" },
+    { feature: "Priority support", free: "—", pro: "✓" },
   ];
 
   return (
@@ -183,7 +161,6 @@ function ComparisonTable() {
             <th className="px-6 py-4 font-semibold text-gray-900">Feature</th>
             <th className="px-6 py-4 font-semibold text-gray-900">Free</th>
             <th className="px-6 py-4 font-semibold text-brand-600">Pro</th>
-            <th className="px-6 py-4 font-semibold text-gray-900">Team</th>
           </tr>
         </thead>
         <tbody>
@@ -192,7 +169,6 @@ function ComparisonTable() {
               <td className="px-6 py-3 font-medium text-gray-700">{row.feature}</td>
               <td className="px-6 py-3 text-gray-500">{row.free}</td>
               <td className="px-6 py-3 text-gray-500">{row.pro}</td>
-              <td className="px-6 py-3 text-gray-500">{row.team}</td>
             </tr>
           ))}
         </tbody>
@@ -222,7 +198,7 @@ function PricingPage() {
           </div>
 
           {/* Pricing cards */}
-          <div className="mt-16 grid gap-8 lg:grid-cols-3 lg:gap-6">
+          <div className="mt-16 grid gap-8 lg:grid-cols-2 lg:gap-6">
             {tiers.map((tier) => (
               <div
                 key={tier.name}

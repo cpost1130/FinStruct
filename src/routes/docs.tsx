@@ -76,7 +76,7 @@ function DocsPage() {
       <div className="mx-auto max-w-4xl px-6 pt-28 pb-16">
         <h1 className="text-3xl font-bold text-gray-900">API Reference</h1>
         <p className="mt-2 text-gray-600">
-          Programmatic access to your FinStruct databases. Requires a Pro or Team subscription.
+          Programmatic access to your FinStruct databases. Requires a Pro subscription.
         </p>
 
         {/* Authentication */}
